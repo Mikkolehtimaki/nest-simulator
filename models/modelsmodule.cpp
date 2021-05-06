@@ -30,6 +30,7 @@
 
 // Neuron models
 #include "aeif_cond_alpha.h"
+#include "aeif_cond_alpha_astro.h"
 #include "aeif_cond_alpha_multisynapse.h"
 #include "aeif_cond_beta_multisynapse.h"
 #include "aeif_cond_exp.h"
@@ -38,6 +39,7 @@
 #include "aeif_psc_delta_clopath.h"
 #include "aeif_psc_exp.h"
 #include "amat2_psc_exp.h"
+#include "astrocyte.h"
 #include "erfc_neuron.h"
 #include "gauss_rate.h"
 #include "gif_psc_exp.h"
@@ -129,6 +131,7 @@
 #include "quantal_stp_synapse_impl.h"
 #include "rate_connection_delayed.h"
 #include "rate_connection_instantaneous.h"
+#include "sic_connection.h"
 #include "static_synapse.h"
 #include "static_synapse_hom_w.h"
 #include "stdp_synapse.h"
@@ -283,7 +286,9 @@ ModelsModule::init( SLIInterpreter* )
   kernel().model_manager.register_node_model< glif_cond >( "glif_cond" );
 
   kernel().model_manager.register_node_model< aeif_psc_delta_clopath >( "aeif_psc_delta_clopath" );
+  kernel().model_manager.register_node_model< astrocyte >( "astrocyte" );
   kernel().model_manager.register_node_model< aeif_cond_alpha >( "aeif_cond_alpha" );
+  kernel().model_manager.register_node_model< aeif_cond_alpha_astro >( "aeif_cond_alpha_astro" );
   kernel().model_manager.register_node_model< aeif_cond_exp >( "aeif_cond_exp" );
   kernel().model_manager.register_node_model< aeif_psc_alpha >( "aeif_psc_alpha" );
   kernel().model_manager.register_node_model< aeif_psc_exp >( "aeif_psc_exp" );
@@ -335,7 +340,8 @@ ModelsModule::init( SLIInterpreter* )
   // register secondary connection models
   register_secondary_connection_model< GapJunction >(
     "gap_junction", RegisterConnectionModelFlags::REQUIRES_SYMMETRIC | RegisterConnectionModelFlags::SUPPORTS_WFR );
-
+  register_secondary_connection_model< SICConnection >(
+    "sic_connection", RegisterConnectionModelFlags::HAS_DELAY );
   register_secondary_connection_model< RateConnectionInstantaneous >(
     "rate_connection_instantaneous", RegisterConnectionModelFlags::SUPPORTS_WFR );
   register_secondary_connection_model< RateConnectionDelayed >(

@@ -399,10 +399,23 @@ Node::handle( DelayedRateConnectionEvent& )
   throw UnexpectedEvent( "The target node does not handle delayed rate input." );
 }
 
+void
+Node::handle( SICEvent& )
+{
+  throw UnexpectedEvent();
+}
+
 port
 Node::handles_test_event( DelayedRateConnectionEvent&, rport )
 {
   throw IllegalConnection( "The target node or synapse model does not support delayed rate input." );
+  return invalid_port_;
+}
+
+port
+Node::handles_test_event( SICEvent&, rport )
+{
+  throw IllegalConnection();
   return invalid_port_;
 }
 
@@ -412,6 +425,11 @@ Node::sends_secondary_event( DelayedRateConnectionEvent& )
   throw IllegalConnection( "The source node does not support delayed rate output." );
 }
 
+void
+Node::sends_secondary_event( SICEvent& )
+{
+  throw IllegalConnection();
+}
 
 double
 Node::get_LTD_value( double )

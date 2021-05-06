@@ -89,6 +89,8 @@ public:
 
   void sends_secondary_event( DelayedRateConnectionEvent& );
 
+  void sends_secondary_event( SICEvent& );
+
   void
   handle( SpikeEvent& )
   {
